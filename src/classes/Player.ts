@@ -1,4 +1,5 @@
 import { Physics, Scene } from 'phaser'
+import { BulletGroup } from './BulletGroup'
 
 export class Player extends Physics.Arcade.Sprite {
   private keyW: Phaser.Input.Keyboard.Key
@@ -8,13 +9,16 @@ export class Player extends Physics.Arcade.Sprite {
   private keySpace: Phaser.Input.Keyboard.Key
   private keyTab: Phaser.Input.Keyboard.Key
   private currentFrame: number
+  private bullets: BulletGroup
 
-  public constructor(scene: Scene, x: number, y: number, frame: number) {
+  public constructor(scene: Scene, x: number, y: number, frame: number, bullets: BulletGroup) {
     super(scene, x, y, 'tanks', frame)
 
+    this.bullets = bullets
     this.currentFrame = frame
     scene.add.existing(this)
     scene.physics.add.existing(this)
+    this.setDepth(1)
 
     this.getBody().setCollideWorldBounds(true)
 
@@ -25,9 +29,18 @@ export class Player extends Physics.Arcade.Sprite {
     this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     this.keyTab = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
 
+    this.keySpace.on('down', () => {
+      this.handleFire()
+    })
     this.keyTab.on('down', () => {
       this.changeTankFrame(this.currentFrame)
     })
+
+    this.rotation = 2
+  }
+
+  handleFire(): void {
+    this.bullets.fireBullet(this.x, this.y, this.rotation)
   }
 
   changeTankFrame(frame: number): void {
