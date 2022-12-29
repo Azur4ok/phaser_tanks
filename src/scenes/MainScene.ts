@@ -29,7 +29,7 @@ export class MainScene extends Scene {
 
     for (let x = snappedChunkX - 2; x < snappedChunkX + 2; x++) {
       for (let y = snappedChunkY - 2; y < snappedChunkY + 2; y++) {
-        let chunk = this.getChunk(x, y)
+        let chunk = this.getChunk(x, y) 
         if (!chunk) {
           chunk = new Area(this, x, y)
           this.chunks.push(chunk)

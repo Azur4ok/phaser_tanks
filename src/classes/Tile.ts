@@ -4,4 +4,6 @@ export class Tile extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture)
     scene.add.existing(this)
   }
+
+  getDamage(damageNumber: number): void {}
 }

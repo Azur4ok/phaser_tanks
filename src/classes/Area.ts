@@ -52,7 +52,7 @@ export class Area {
 
           this.tileGroup.add(new Tile(this.scene, tileX, tileY, 'earth'))
           if (isblocking) {
-            let tile
+            let tile = null
             if (destroyable) {
               tile = new Enemy(this.scene, tileX, tileY, key)
             } else {
@@ -65,17 +65,18 @@ export class Area {
             this.scene.physics.add.overlap(
               player,
               tile,
-              (object1, object2) => {
+              (_object1, object2) => {
                 if (!(object2 as Enemy).healthPoint) {
-                  object2.destroy()
+                  object2.destroy(true)
+                } else {
+                  object2.destroy(true)
                 }
               },
               undefined,
               this,
             )
-            const bullet = new Bullet(this.scene, 0, 0)
-            this.scene.physics.add.collider(bullet, tile, (object1, object2) => {
-              bullet.enemyCollision(object2 as Enemy)
+            this.scene.physics.add.collider(player.bullets, tile, (tile, bullet) => {
+              player.bullets.enemyCollision(bullet as Bullet, tile as Enemy)
             })
           }
         }

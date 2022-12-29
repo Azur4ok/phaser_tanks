@@ -9,7 +9,9 @@ export class Player extends Physics.Arcade.Sprite {
   private keySpace: Phaser.Input.Keyboard.Key
   private keyTab: Phaser.Input.Keyboard.Key
   private currentFrame: number
-  private bullets: BulletGroup
+  private cameraSpeed: number = 100
+  private tankSpeed: { x: number; y: number } = { x: 0, y: 0 }
+  public bullets: BulletGroup
 
   public constructor(scene: Scene, x: number, y: number, frame: number, bullets: BulletGroup) {
     super(scene, x, y, 'tanks', frame)
@@ -29,14 +31,28 @@ export class Player extends Physics.Arcade.Sprite {
     this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     this.keyTab = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
 
+    this.initEvents()
+  }
+
+  private initEvents(): void {
     this.keySpace.on('down', () => {
       this.handleFire()
     })
     this.keyTab.on('down', () => {
       this.changeTankFrame(this.currentFrame)
     })
-
-    this.rotation = 2
+    this.keyA.on('down', () => {
+      this.handleChangeVelocity(-this.cameraSpeed, 0)
+    })
+    this.keyW.on('down', () => {
+      this.handleChangeVelocity(0, -this.cameraSpeed)
+    })
+    this.keyD.on('down', () => {
+      this.handleChangeVelocity(this.cameraSpeed, 0)
+    })
+    this.keyS.on('down', () => {
+      this.handleChangeVelocity(0, this.cameraSpeed)
+    })
   }
 
   handleFire(): void {
@@ -54,6 +70,30 @@ export class Player extends Physics.Arcade.Sprite {
       this.currentFrame = 2
       this.setFrame(this.currentFrame)
     }
+  }
+
+  public handleChangeVelocity(velocityX: number, velocityY: number): void {
+    if (velocityX) {
+      this.tankSpeed.x += this.tankSpeed.x >= this.cameraSpeed ? 0 : velocityX
+    } else {
+      this.tankSpeed.x += this.tankSpeed.x <= -this.cameraSpeed ? 0 : velocityX
+    }
+    if (velocityY) {
+      this.tankSpeed.y += this.tankSpeed.y >= this.cameraSpeed ? 0 : velocityY
+    } else {
+      this.tankSpeed.y += this.tankSpeed.y <= -this.cameraSpeed ? 0 : velocityY
+    }
+    this.setVelocity(this.tankSpeed.x, this.tankSpeed.y)
+    if (this.tankSpeed.x || this.tankSpeed.y) {
+      this.setRotation(Math.atan2(this.tankSpeed.x, -this.tankSpeed.y))
+    }
+  }
+
+  public handleChangeAngle(angle: number): void {
+    this.rotation = angle + Math.PI / 2
+    this.tankSpeed.x = this.cameraSpeed * Math.cos(angle)
+    this.tankSpeed.y = this.cameraSpeed * Math.sin(angle)
+    this.setVelocity(this.tankSpeed.x, this.tankSpeed.y)
   }
 
   getBody(): Physics.Arcade.Body {

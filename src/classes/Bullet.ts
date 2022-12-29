@@ -1,5 +1,3 @@
-import { Enemy } from './Enemy'
-
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
   private fireSpeed: number = 450
   public timeToDie: Phaser.Time.TimerEvent
@@ -16,13 +14,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.setVelocity(0)
       },
     })
-  }
 
-  public enemyCollision(enemy: Enemy): void {
-    this.body.enable = false
-    this.setActive(false)
-    this.setVisible(false)
-    enemy.getDamage(this.bulletDamage)
+    this.setDepth(100)
   }
 
   public fire(x: number, y: number, angle: number): void {

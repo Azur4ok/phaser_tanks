@@ -1,4 +1,5 @@
 import { Bullet } from './Bullet'
+import { Enemy } from './Enemy'
 
 export class BulletGroup extends Phaser.Physics.Arcade.Group {
   public constructor(scene: Phaser.Scene) {
@@ -15,6 +16,15 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
     this.world.enable(this.getChildren())
   }
 
+  public enemyCollision(bullet: Bullet, enemy: Enemy): void {
+    console.log(enemy)
+
+    bullet.body.enable = false
+    bullet.setActive(false)
+    bullet.setVisible(false)
+    enemy.getDamage(bullet.bulletDamage)
+  }
+
   public fireBullet(x: number, y: number, angle: number): void {
     const bullet: Bullet = this.getFirstDead(false)
     if (bullet && bullet.body) {
@@ -22,6 +32,6 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
         bullet.timeToDie.destroy()
       }
       bullet.fire(x, y, angle)
-    } 
+    }
   }
 }
