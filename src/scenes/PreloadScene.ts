@@ -19,5 +19,6 @@ export class PreloadScene extends Scene {
 
   private create(): void {
     this.scene.start('main-scene')
+    this.scene.start('ui-scene')
   }
 }

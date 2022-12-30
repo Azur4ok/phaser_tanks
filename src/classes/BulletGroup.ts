@@ -1,4 +1,5 @@
 import { Bullet } from './Bullet'
+import { Tile } from './Tile'
 import { Enemy } from './Enemy'
 
 export class BulletGroup extends Phaser.Physics.Arcade.Group {
@@ -13,12 +14,12 @@ export class BulletGroup extends Phaser.Physics.Arcade.Group {
       visible: false,
     })
 
+    this.setDepth(1, 0)
+
     this.world.enable(this.getChildren())
   }
 
-  public enemyCollision(bullet: Bullet, enemy: Enemy): void {
-    console.log(enemy)
-
+  public enemyCollision(bullet: Bullet, enemy: Tile | Enemy): void {
     bullet.body.enable = false
     bullet.setActive(false)
     bullet.setVisible(false)

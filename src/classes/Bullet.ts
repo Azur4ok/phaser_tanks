@@ -1,7 +1,7 @@
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
   private fireSpeed: number = 450
   public timeToDie: Phaser.Time.TimerEvent
-  public bulletDamage: number = 10
+  public bulletDamage: number = 20
   public constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'bullet')
 
@@ -14,8 +14,6 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.setVelocity(0)
       },
     })
-
-    this.setDepth(100)
   }
 
   public fire(x: number, y: number, angle: number): void {

@@ -16,8 +16,8 @@ export class Area {
     this.x = x
     this.y = y
 
-    this.tileGroup = this.scene.add.group()
-    this.blockedLayer = this.scene.add.group()
+    this.tileGroup = scene.add.group()
+    this.blockedLayer = scene.add.group()
   }
 
   public clearElements(): void {
@@ -30,24 +30,23 @@ export class Area {
 
   public loadElements(player: Player): void {
     if (!this.isLoaded) {
-      for (let i = 0; i < this.scene.chunkSize; i++) {
-        for (let j = 0; j < this.scene.chunkSize; j++) {
+      for (let i = 0; i < this.scene.squareSize; i++) {
+        for (let j = 0; j < this.scene.squareSize; j++) {
           const tileX =
-            this.x * (this.scene.chunkSize * this.scene.tileSize) + i * this.scene.tileSize
+            this.x * (this.scene.squareSize * this.scene.tileSize) + i * this.scene.tileSize
           const tileY =
-            this.y * (this.scene.chunkSize * this.scene.tileSize) + j * this.scene.tileSize
+            this.y * (this.scene.squareSize * this.scene.tileSize) + j * this.scene.tileSize
           const randomNumber = Math.random()
           let key = 'earth'
           let isblocking = false
           let destroyable = false
           if (randomNumber > 0.9) {
+            key = 'wall'
+            isblocking = true
+          } else if (randomNumber > 0.8) {
             key = 'hay'
             isblocking = true
             destroyable = true
-          } else if (randomNumber > 0.8) {
-            key = 'wall'
-            isblocking = true
-            destroyable = false
           }
 
           this.tileGroup.add(new Tile(this.scene, tileX, tileY, 'earth'))
@@ -66,7 +65,7 @@ export class Area {
               player,
               tile,
               (_object1, object2) => {
-                if (!(object2 as Enemy).healthPoint) {
+                if (!(object2 as Tile).healthPoint) {
                   object2.destroy(true)
                 } else {
                   object2.destroy(true)
@@ -76,7 +75,7 @@ export class Area {
               this,
             )
             this.scene.physics.add.collider(player.bullets, tile, (tile, bullet) => {
-              player.bullets.enemyCollision(bullet as Bullet, tile as Enemy)
+              player.bullets.enemyCollision(bullet as Bullet, tile as Enemy | Tile)
             })
           }
         }

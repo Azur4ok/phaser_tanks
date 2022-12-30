@@ -1,5 +1,5 @@
 import { Types, AUTO, Game } from 'phaser'
-import { PreloadScene, MainScene } from './scenes'
+import { PreloadScene, MainScene, UIScene } from './scenes'
 
 const scaleConfig: Types.Core.ScaleConfig = {
   mode: Phaser.Scale.FIT,
@@ -22,7 +22,7 @@ const gameConfig: Types.Core.GameConfig = {
       y: 0,
     },
   },
-  scene: [PreloadScene, MainScene],
+  scene: [PreloadScene, MainScene, UIScene],
 }
 
 export default new Game(gameConfig)

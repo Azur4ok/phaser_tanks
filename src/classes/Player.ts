@@ -55,7 +55,7 @@ export class Player extends Physics.Arcade.Sprite {
     })
   }
 
-  handleFire(): void {
+  public handleFire(): void {
     this.bullets.fireBullet(this.x, this.y, this.rotation)
   }
 
@@ -73,14 +73,14 @@ export class Player extends Physics.Arcade.Sprite {
   }
 
   public handleChangeVelocity(velocityX: number, velocityY: number): void {
-    if (velocityX) {
+    if (velocityX > 0) {
       this.tankSpeed.x += this.tankSpeed.x >= this.cameraSpeed ? 0 : velocityX
-    } else {
+    } else if (velocityX < 0) {
       this.tankSpeed.x += this.tankSpeed.x <= -this.cameraSpeed ? 0 : velocityX
     }
-    if (velocityY) {
+    if (velocityY > 0) {
       this.tankSpeed.y += this.tankSpeed.y >= this.cameraSpeed ? 0 : velocityY
-    } else {
+    } else if (velocityY < 0) {
       this.tankSpeed.y += this.tankSpeed.y <= -this.cameraSpeed ? 0 : velocityY
     }
     this.setVelocity(this.tankSpeed.x, this.tankSpeed.y)
