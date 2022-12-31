@@ -18,8 +18,14 @@ export class MainScene extends Scene {
   private create(): void {
     this.scale.on('resize', this.handleResize, this)
     const bullets = new BulletGroup(this)
-    this.player = new Player(this, window.innerWidth / 2, window.innerHeight / 2, 1, bullets)    
-    this.cameras.main.startFollow(this.player, true)
+    this.player = new Player(
+      this,
+      this.cameras.main.worldView.x + this.cameras.main.worldView.width * 0.5,
+      this.cameras.main.worldView.y + this.cameras.main.worldView.height * 0.5,
+      1,
+      bullets,
+    )
+    this.cameras.main.startFollow(this.player)
   }
 
   private handleUpdateMap(): void {

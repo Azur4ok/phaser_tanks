@@ -29,13 +29,4 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
       Math.round(-this.fireSpeed * Math.cos(angle)),
     )
   }
-
-  protected preUpdate(time: number, delta: number): void {
-    super.preUpdate(time, delta)
-
-    if (this.y <= 0 || this.y >= window.innerHeight || this.x <= 0 || this.x >= window.innerWidth) {
-      this.setActive(false)
-      this.setVisible(false)
-    }
-  }
 }

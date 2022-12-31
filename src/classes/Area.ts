@@ -36,7 +36,7 @@ export class Area {
             this.x * (this.scene.squareSize * this.scene.tileSize) + i * this.scene.tileSize
           const tileY =
             this.y * (this.scene.squareSize * this.scene.tileSize) + j * this.scene.tileSize
-          const randomNumber = Math.random()
+          let randomNumber = Math.random()
           let key = 'earth'
           let isblocking = false
           let destroyable = false
@@ -57,7 +57,6 @@ export class Area {
             } else {
               tile = new Tile(this.scene, tileX, tileY, key)
             }
-
             this.blockedLayer.add(tile)
             this.scene.physics.add.existing(tile, true)
             this.scene.physics.add.collider(player, tile)

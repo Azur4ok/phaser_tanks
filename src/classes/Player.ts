@@ -22,7 +22,6 @@ export class Player extends Physics.Arcade.Sprite {
     scene.physics.add.existing(this)
     this.setDepth(1)
 
-    this.getBody().setCollideWorldBounds(true)
 
     this.keyW = this.scene.input.keyboard.addKey('W')
     this.keyA = this.scene.input.keyboard.addKey('A')
@@ -84,6 +83,7 @@ export class Player extends Physics.Arcade.Sprite {
       this.tankSpeed.y += this.tankSpeed.y <= -this.cameraSpeed ? 0 : velocityY
     }
     this.setVelocity(this.tankSpeed.x, this.tankSpeed.y)
+    
     if (this.tankSpeed.x || this.tankSpeed.y) {
       this.setRotation(Math.atan2(this.tankSpeed.x, -this.tankSpeed.y))
     }
@@ -94,9 +94,5 @@ export class Player extends Physics.Arcade.Sprite {
     this.tankSpeed.x = this.cameraSpeed * Math.cos(angle)
     this.tankSpeed.y = this.cameraSpeed * Math.sin(angle)
     this.setVelocity(this.tankSpeed.x, this.tankSpeed.y)
-  }
-
-  getBody(): Physics.Arcade.Body {
-    return this.body as Physics.Arcade.Body
   }
 }
